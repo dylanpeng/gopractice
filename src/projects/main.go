@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"gopractice/projects/goconveydemo"
+	"gopractice/projects/testdemo/goconveydemo"
 )
 
 func main(){
