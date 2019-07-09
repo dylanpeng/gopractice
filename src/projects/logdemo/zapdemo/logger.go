@@ -127,7 +127,10 @@ func LumberjackLog() {
 
 	// 设置日志级别
 	atomicLevel := zap.NewAtomicLevel()
-	atomicLevel.SetLevel(zap.InfoLevel)
+	atomicLevel.SetLevel(zap.DebugLevel)
+
+	// 设置打印堆栈级别
+	stacktraceLevel := zap.NewAtomicLevelAt(zap.WarnLevel)
 
 	core := zapcore.NewCore(
 		zapcore.NewConsoleEncoder(encoderConfig),                                        // 编码
@@ -135,19 +138,22 @@ func LumberjackLog() {
 		atomicLevel,                                                                     // 日志
 	)
 
-	// 开启开发模式，堆栈跟踪
+	// 开启开发模式，调用跟踪
 	caller := zap.AddCaller()
+	// 开启堆栈跟踪
+	stacktrace := zap.AddStacktrace(stacktraceLevel)
 	// 开启文件及行号
 	development := zap.Development()
 	// 设置初始化字段
 	filed := zap.Fields(zap.String("serviceName", "serviceName"))
 	// 构建日志
-	logger := zap.New(core, caller, development, filed)
+	logger := zap.New(core, caller, stacktrace, filed, development)
 
 	var count int
 	for {
 		logger.Info("log 初始化成功")
-		logger.Info("无法获取网址",
+		logger.Warn("log 初始化异常")
+		logger.Error("无法获取网址",
 			zap.String("url", "http://www.baidu.com"),
 			zap.Int("attempt", 3),
 			zap.Duration("backoff", time.Second))
