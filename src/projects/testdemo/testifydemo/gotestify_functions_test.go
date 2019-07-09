@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestIsEqual(t *testing.T){
+func TestIsEqual(t *testing.T) {
 	ok1 := goconveydemo.IsEqual(1, 1)
 	ok2 := goconveydemo.IsEqual(1, 2)
 

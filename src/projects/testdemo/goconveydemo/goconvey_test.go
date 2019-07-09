@@ -20,27 +20,27 @@ func TestSpec(t *testing.T) {
 	})
 }
 
-func TestIsEqual(t *testing.T){
+func TestIsEqual(t *testing.T) {
 	Convey("1 == 1", t, func() {
 		So(IsEqual(1, 1), ShouldBeTrue)
 	})
 }
 
-func TestIsEqualWithErr(t *testing.T){
-	Convey("IsEqualWithErr", t, func(){
-		Convey("2 > 1, over", func(){
+func TestIsEqualWithErr(t *testing.T) {
+	Convey("IsEqualWithErr", t, func() {
+		Convey("2 > 1, over", func() {
 			ok, err := IsEqualWithErr(2, 1)
 			So(ok, ShouldBeFalse)
 			So(err, ShouldNotBeNil)
 		})
 
-		Convey("1 < 2, under", func(){
+		Convey("1 < 2, under", func() {
 			ok, err := IsEqualWithErr(1, 2)
 			So(ok, ShouldBeFalse)
 			So(err, ShouldNotBeNil)
 		})
 
-		Convey("1 = 1, equal", func(){
+		Convey("1 = 1, equal", func() {
 			ok, err := IsEqualWithErr(1, 1)
 			So(ok, ShouldBeTrue)
 			So(err, ShouldBeNil)
