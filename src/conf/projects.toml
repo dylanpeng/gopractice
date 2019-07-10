@@ -10,3 +10,24 @@ stacktrace_key = "Stracktrace"
 log_level = "Debug"
 stacktrace_level = "Error"
 service_name = "log_zap_demo"
+
+[[fruit]]
+  name = "apple"
+
+  [fruit.physical]
+    color = "red"
+    shape = "round"
+
+  [[fruit.variety]]
+    name = "red delicious"
+
+  [[fruite.variety]]
+
+  [[fruit.variety]]
+    name = "granny smith"
+
+[[fruit]]
+  name = "banana"
+
+  [[fruit.variety]]
+    name = "plantain"
