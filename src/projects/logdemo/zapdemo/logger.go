@@ -2,15 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"gopractice/common"
+	"gopractice/lib/logger"
 	"os"
 	"time"
 )
 
 func main() {
-	LumberjackLog()
+	LocalLogDemo()
 }
 
 func QuickLoggerDemo() {
@@ -163,4 +166,41 @@ func LumberjackLog() {
 			break
 		}
 	}
+}
+
+func LocalLogDemo() {
+	config := &Config{}
+
+	_, err := toml.DecodeFile("./conf/projects.toml", config)
+	if err != nil {
+		fmt.Printf("get config failed. err : %s ", err)
+		return
+	}
+
+	err = common.InitLogger(config.LogConfig)
+	if err != nil {
+		fmt.Printf("init logger failed. err : %s", err)
+		return
+	}
+
+	common.Logger.Debug("Debug", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+	common.Logger.Info("Info", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+	common.Logger.Warn("Warn", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+	common.Logger.Error("Error", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+	//common.Logger.DPanic("DPanic", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+	//common.Logger.Panic("Panic", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+	//common.Logger.Fatal("Fatal", zap.String("string", "testString"), zap.Int("int", 1), zap.Bool("bool", true))
+
+	common.Logger.Debugf("debug f %s", "test")
+	common.Logger.Infof("info f %s", "test")
+	common.Logger.Warnf("warn f %s", "test")
+	common.Logger.Errorf("error f %s", "test")
+	//common.Logger.DPanicf("DPanic f %s", "test")
+	//common.Logger.Panicf("Panic f %s", "test")
+	//common.Logger.Fatalf("fatal f %s", "test")
+
+}
+
+type Config struct {
+	LogConfig *logger.Config `toml:"log"`
 }
