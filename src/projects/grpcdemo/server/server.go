@@ -8,9 +8,9 @@ import (
 	"net"
 )
 
-func main(){
+func main() {
 	lis, err := net.Listen("tcp", ":50052")
-	if err != nil{
+	if err != nil {
 		fmt.Printf("failed to listen: %s \n", err)
 		return
 	}
@@ -20,16 +20,16 @@ func main(){
 	fmt.Println("success")
 	err = s.Serve(lis)
 
-	if err != nil{
+	if err != nil {
 		fmt.Printf("failed to start grpc server: %s \n", err)
 		return
 	}
 }
 
-type server struct{
+type server struct {
 }
 
-func (s *server) GetHelloWorld(ctx context.Context, req *protocol_demo.HelloWorldReq) (rsp *protocol_demo.HelloWorldRsp, err error){
+func (s *server) GetHelloWorld(ctx context.Context, req *protocol_demo.HelloWorldReq) (rsp *protocol_demo.HelloWorldRsp, err error) {
 	rsp = &protocol_demo.HelloWorldRsp{}
 	rsp.Message = fmt.Sprintf("hello user: %d", req.Id)
 	return rsp, nil

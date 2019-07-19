@@ -43,8 +43,8 @@ func beginTickerDemo() {
 
 func beginWorksetDemo() {
 	workset := &ticker.WorkSet{}
-	workset.AddWork(time.Second * 2, &workStruct2{})
-	workset.AddWork(time.Second * 3, &workStruct3{})
+	workset.AddWork(time.Second*2, &workStruct2{})
+	workset.AddWork(time.Second*3, &workStruct3{})
 	workset.Start()
 
 	time.Sleep(time.Second * 30)

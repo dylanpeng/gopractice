@@ -5,7 +5,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-func main(){
+func main() {
 	config := &Config{}
 
 	_, err := toml.DecodeFile("./conf/fruit.toml", config)
@@ -18,7 +18,7 @@ func main(){
 }
 
 type Config struct {
-	Fruits    []*Fruit             `toml:"fruit"`
+	Fruits []*Fruit `toml:"fruit"`
 }
 
 func (c *Config) String() string {
