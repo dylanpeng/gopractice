@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package protocol_demo;
+
+option go_package = "lib/proto/protocol_demo";
+
+message HelloWorldReq {
+    int64 Id = 1;
+}
+
+message HelloWorldRsp {
+    string Message = 2;
+}
+
+service HelloWorld {
+    rpc GetHelloWorld (HelloWorldReq) returns (HelloWorldRsp) {
+    }
+}
+
+//protoc -I ./ --gofast_out=plugins=grpc:. protocol_demo.proto
