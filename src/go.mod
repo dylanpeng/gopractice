@@ -5,6 +5,7 @@ go 1.12
 require (
 	cloud.google.com/go v0.43.0 // indirect
 	github.com/BurntSushi/toml v0.3.1
+	github.com/go-redis/redis v6.15.2+incompatible // indirect
 	github.com/golang/protobuf v1.3.2
 	github.com/pkg/errors v0.8.1
 	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a
