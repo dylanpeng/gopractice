@@ -20,3 +20,4 @@ src/go.sum
 #忽略的文件夹
 src/logs
 .idea
+pkg/
