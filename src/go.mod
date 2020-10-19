@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/go-redis/redis v6.15.2+incompatible
+	github.com/go-zookeeper/zk v1.0.2
 	github.com/golang/protobuf v1.3.5
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
