@@ -13,23 +13,26 @@ import (
 )
 
 func main() {
-	//go StartConsumer()
-	go StartOrderConsumer()
+	go StartConsumer("1")
+	go StartConsumer("2")
+	//go StartOrderConsumer()
 	go StartProducer()
 	//time.Sleep(time.Minute)
 	//go StartProducer()
 	time.Sleep(time.Hour)
 }
 
-func StartConsumer() {
+func StartConsumer(num string) {
 	c, _ := rocketmq.NewPushConsumer(
 		consumer.WithGroupName("testGroup"),
 		consumer.WithNameServer([]string{"127.0.0.1:9876"}),
+		//consumer.WithInstance(num),
 	)
+
 	err := c.Subscribe("test", consumer.MessageSelector{}, func(ctx context.Context,
 		msgs ...*primitive.MessageExt) (consumer.ConsumeResult, error) {
 		for i := range msgs {
-			fmt.Printf("------------------consumer--------------------------\n")
+			fmt.Printf("------------------consumer:%s--------------------------\n", num)
 			fmt.Printf("consumer subscribe callback: %v \n", msgs[i])
 		}
 
@@ -105,7 +108,7 @@ func StartOrderConsumer() {
 		consumer.WithConsumeFromWhere(consumer.ConsumeFromFirstOffset),
 		consumer.WithConsumerOrder(true),
 	)
-	err := c.Subscribe("test", consumer.MessageSelector{Type:consumer.TAG, Expression:"TagA"}, func(ctx context.Context,
+	err := c.Subscribe("test", consumer.MessageSelector{Type: consumer.TAG, Expression: "TagA"}, func(ctx context.Context,
 		msgs ...*primitive.MessageExt) (consumer.ConsumeResult, error) {
 		for i := range msgs {
 			fmt.Printf("------------------consumer--------------------------\n")
