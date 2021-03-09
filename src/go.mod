@@ -1,10 +1,11 @@
 module gopractice
 
-go 1.12
+go 1.16
 
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/apache/rocketmq-client-go/v2 v2.0.0
+	github.com/forgoer/openssl v0.0.0-20201023062029-c3112b0c8700 // indirect
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-zookeeper/zk v1.0.2
 	github.com/golang/protobuf v1.3.5
