@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func main(){
-	fmt.Printf("kafka producer begin")
+func main() {
+	fmt.Printf("kafka producer begin, please enter a word. \n")
 
 	config := sarama.NewConfig()
 	config.Producer.Return.Successes = true
@@ -18,15 +18,15 @@ func main(){
 
 	producer, err := sarama.NewSyncProducer([]string{"localhost:9092"}, config)
 
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	defer producer.Close()
 
 	msg := &sarama.ProducerMessage{
-		Topic:"testgo",
-		Partition:int32(-1),
-		Key:sarama.StringEncoder("key"),
+		Topic:     "testgo",
+		Partition: int32(-1),
+		Key:       sarama.StringEncoder("key"),
 	}
 
 	var value string
@@ -34,7 +34,7 @@ func main(){
 		inputReader := bufio.NewReader(os.Stdin)
 		value, err = inputReader.ReadString('\n')
 
-		if err != nil{
+		if err != nil {
 			panic(err)
 		}
 
@@ -42,7 +42,7 @@ func main(){
 		msg.Value = sarama.ByteEncoder(value)
 		partition, offset, err := producer.SendMessage(msg)
 
-		if err != nil{
+		if err != nil {
 			fmt.Println("Send Message Fail!")
 		}
 
