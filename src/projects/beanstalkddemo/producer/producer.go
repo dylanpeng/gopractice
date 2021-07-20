@@ -19,6 +19,8 @@ func main() {
 
 	defer c.Close()
 
+	fmt.Printf("beanstalkd producer begin, please enter a word. \n")
+
 	//设置tube队列
 	c.Tube.Name = "test"
 	c.TubeSet.Name["test"] = true
