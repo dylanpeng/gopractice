@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
+	"gopractice/common"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -22,12 +24,16 @@ func main() {
 	//b := CheckIdFormat(1, "234345456")
 	//fmt.Println(b)
 
-	sdfj := []string{"1","2","3","4"}
+	enCode := common.MysqlAESEncrypt([]byte("aaa"), []byte("QPMsNI1NaYsKnevjvmurTVbfc3IDITI4"))
 
-	b := sdfj[1:5]
+	hexCode := hex.EncodeToString(enCode)
+	//fmt.Printf("enCode:%s \n", string(enCode))
+	fmt.Printf("hexCode:%s \n", hexCode)
 
+	byteDecode, _ := hex.DecodeString(hexCode)
+	deCode := common.MysqlAESDecrypt(byteDecode, []byte("QPMsNI1NaYsKnevjvmurTVbfc3IDITI4"))
 
-	fmt.Printf("%v \n", b)
+	fmt.Printf("%s \n", string(deCode))
 }
 
 func WinningLottery(probabilityMap map[int64]int) (winId int64) {
