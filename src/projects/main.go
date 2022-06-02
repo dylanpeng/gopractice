@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/hex"
 	"fmt"
 	"gopractice/common"
 	"math/rand"
@@ -24,14 +23,11 @@ func main() {
 	//b := CheckIdFormat(1, "234345456")
 	//fmt.Println(b)
 
-	enCode := common.MysqlAESEncrypt([]byte("aaa"), []byte("QPMsNI1NaYsKnevjvmurTVbfc3IDITI4"))
+	enCode := common.MysqlAESEncryptString("sk_abd4940222cc45fe9dc8e5279c986c6e", "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
 
-	hexCode := hex.EncodeToString(enCode)
-	//fmt.Printf("enCode:%s \n", string(enCode))
-	fmt.Printf("hexCode:%s \n", hexCode)
+	fmt.Printf("hexCode:%s \n", enCode)
 
-	byteDecode, _ := hex.DecodeString(hexCode)
-	deCode := common.MysqlAESDecrypt(byteDecode, []byte("QPMsNI1NaYsKnevjvmurTVbfc3IDITI4"))
+	deCode, _ := common.MysqlAESDecryptString(enCode, "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
 
 	fmt.Printf("%s \n", string(deCode))
 }
