@@ -23,7 +23,7 @@ func main() {
 	//b := CheckIdFormat(1, "234345456")
 	//fmt.Println(b)
 
-	enCode := common.MysqlAESEncryptString("sk_abd4940222cc45fe9dc8e5279c986c6e", "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
+	enCode := common.MysqlAESEncryptString("sk_abd4940222cc45fe9dc8e5279c986c6esdsk_abd4940222cc45fe9dc8e5279c986c6esdsk_abd4940222cc45fe9dc8e5279c986c6esdsdfe3rjyuiojkaet", "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
 
 	fmt.Printf("hexCode:%s \n", enCode)
 
