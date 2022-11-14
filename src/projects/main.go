@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"gopractice/common"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -23,13 +22,21 @@ func main() {
 	//b := CheckIdFormat(1, "234345456")
 	//fmt.Println(b)
 
-	enCode := common.MysqlAESEncryptString("sk_abd4940222cc45fe9dc8e5279c986c6esdsk_abd4940222cc45fe9dc8e5279c986c6esdsk_abd4940222cc45fe9dc8e5279c986c6esdsdfe3rjyuiojkaet", "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
+	//enCode := common.MysqlAESEncryptString("sk_abd4940222cc45fe9dc8e5279c986c6esdsk_abd4940222cc45fe9dc8e5279c986c6esdsk_abd4940222cc45fe9dc8e5279c986c6esdsdfe3rjyuiojkaet", "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
+	//
+	//fmt.Printf("hexCode:%s \n", enCode)
+	//
+	//deCode, _ := common.MysqlAESDecryptString(enCode, "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
+	//
+	//fmt.Printf("%s \n", string(deCode))
 
-	fmt.Printf("hexCode:%s \n", enCode)
+	now := time.Date(2022, 7, 31, 11, 0, 0, 0, time.Local)
+	pastMonth := now.AddDate(0, -1, 0)
 
-	deCode, _ := common.MysqlAESDecryptString(enCode, "QPMsNI1NaYsKnevjvmurTVbfc3IDITI4")
+	a, b := now.Format("0601"), pastMonth.Format("0601")
 
-	fmt.Printf("%s \n", string(deCode))
+	fmt.Printf("a: %s, b: %s, a: %s, b: %s \n", a, b, now, pastMonth)
+
 }
 
 func WinningLottery(probabilityMap map[int64]int) (winId int64) {
