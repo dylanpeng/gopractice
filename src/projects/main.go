@@ -91,6 +91,7 @@ func DesensitizationNormal(org string) (result string) {
 	}
 
 	result = strings.Repeat("*", orgLen-num) + org[orgLen-num:orgLen]
+	
 	return
 }
 
