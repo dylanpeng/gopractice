@@ -22,8 +22,8 @@ func JwtRsDemo() {
 		RegisteredClaims: &jwt.RegisteredClaims{
 			Issuer:    "dylan-api",
 			Subject:   "dylan-api-token",
-			ExpiresAt: &jwt.NumericDate{Time: time.Now().AddDate(0, 0, 3)},
-			IssuedAt:  &jwt.NumericDate{Time: time.Now()},
+			ExpiresAt: jwt.NewNumericDate(time.Now().AddDate(0, 0, 3)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ID:        "1111111",
 		},
 		Name:   "test",
