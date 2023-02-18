@@ -11,6 +11,7 @@ require (
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-zookeeper/zk v1.0.2
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/golang/protobuf v1.5.2
 	github.com/kr/beanstalk v0.0.0-20180818045031-cae1762e4858
 	github.com/olivere/elastic/v7 v7.0.26
@@ -35,7 +36,6 @@ require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
 	github.com/golang/mock v1.3.1 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect

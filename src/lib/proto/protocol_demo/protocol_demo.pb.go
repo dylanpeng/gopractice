@@ -12,6 +12,7 @@ import (
 	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -23,13 +24,13 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type HelloWorldReq struct {
-	Id                   int64    `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Id                   int64    `protobuf:"varint,1,opt,name=Id,proto3" json:"Id" form:"Id"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-" form:"-"`
+	XXX_unrecognized     []byte   `json:"-" form:"-"`
+	XXX_sizecache        int32    `json:"-" form:"-"`
 }
 
 func (m *HelloWorldReq) Reset()         { *m = HelloWorldReq{} }
@@ -46,7 +47,7 @@ func (m *HelloWorldReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_HelloWorldReq.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -73,10 +74,10 @@ func (m *HelloWorldReq) GetId() int64 {
 }
 
 type HelloWorldRsp struct {
-	Message              string   `protobuf:"bytes,2,opt,name=Message,proto3" json:"Message,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              string   `protobuf:"bytes,2,opt,name=Message,proto3" json:"Message" form:"Message"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-" form:"-"`
+	XXX_unrecognized     []byte   `json:"-" form:"-"`
+	XXX_sizecache        int32    `json:"-" form:"-"`
 }
 
 func (m *HelloWorldRsp) Reset()         { *m = HelloWorldRsp{} }
@@ -93,7 +94,7 @@ func (m *HelloWorldRsp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_HelloWorldRsp.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -224,7 +225,7 @@ var _HelloWorld_serviceDesc = grpc.ServiceDesc{
 func (m *HelloWorldReq) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -232,25 +233,31 @@ func (m *HelloWorldReq) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *HelloWorldReq) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *HelloWorldReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintProtocolDemo(dAtA, i, uint64(m.Id))
-	}
 	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintProtocolDemo(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *HelloWorldRsp) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -258,30 +265,39 @@ func (m *HelloWorldRsp) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *HelloWorldRsp) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *HelloWorldRsp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Message) > 0 {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintProtocolDemo(dAtA, i, uint64(len(m.Message)))
-		i += copy(dAtA[i:], m.Message)
-	}
 	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	return i, nil
+	if len(m.Message) > 0 {
+		i -= len(m.Message)
+		copy(dAtA[i:], m.Message)
+		i = encodeVarintProtocolDemo(dAtA, i, uint64(len(m.Message)))
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintProtocolDemo(dAtA []byte, offset int, v uint64) int {
+	offset -= sovProtocolDemo(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *HelloWorldReq) Size() (n int) {
 	if m == nil {
@@ -315,14 +331,7 @@ func (m *HelloWorldRsp) Size() (n int) {
 }
 
 func sovProtocolDemo(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozProtocolDemo(x uint64) (n int) {
 	return sovProtocolDemo(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -489,6 +498,7 @@ func (m *HelloWorldRsp) Unmarshal(dAtA []byte) error {
 func skipProtocolDemo(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -520,10 +530,8 @@ func skipProtocolDemo(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -544,55 +552,30 @@ func skipProtocolDemo(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthProtocolDemo
 			}
 			iNdEx += length
-			if iNdEx < 0 {
-				return 0, ErrInvalidLengthProtocolDemo
-			}
-			return iNdEx, nil
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowProtocolDemo
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipProtocolDemo(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-				if iNdEx < 0 {
-					return 0, ErrInvalidLengthProtocolDemo
-				}
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupProtocolDemo
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthProtocolDemo
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthProtocolDemo = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowProtocolDemo   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthProtocolDemo        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowProtocolDemo          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupProtocolDemo = fmt.Errorf("proto: unexpected end of group")
 )
