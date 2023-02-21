@@ -63,10 +63,10 @@ type commonService struct {
 	*common.UnimplementedCommonServiceServer
 }
 
-func (c *commonService) CommonTest(ctx context.Context, empty *common.Empty) (rsp *common.Response, err error) {
+func (c *commonService) CommonTest(ctx context.Context, req *common.CommonReq) (rsp *common.Response, err error) {
 	rsp = &common.Response{
 		Code:    200,
-		Message: "success",
+		Message: req.Message,
 	}
 
 	return

@@ -39,6 +39,10 @@ message HealthRsp {
     int64 timestamp = 3;
 }
 
+message CommonReq {
+    string message = 1;
+}
+
 service CommonService {
-    rpc CommonTest(common.Empty) returns (common.Response){}
+    rpc CommonTest(CommonReq) returns (common.Response){}
 }

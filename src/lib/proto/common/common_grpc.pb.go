@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommonServiceClient interface {
-	CommonTest(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Response, error)
+	CommonTest(ctx context.Context, in *CommonReq, opts ...grpc.CallOption) (*Response, error)
 }
 
 type commonServiceClient struct {
@@ -37,7 +37,7 @@ func NewCommonServiceClient(cc grpc.ClientConnInterface) CommonServiceClient {
 	return &commonServiceClient{cc}
 }
 
-func (c *commonServiceClient) CommonTest(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Response, error) {
+func (c *commonServiceClient) CommonTest(ctx context.Context, in *CommonReq, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, CommonService_CommonTest_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -50,7 +50,7 @@ func (c *commonServiceClient) CommonTest(ctx context.Context, in *Empty, opts ..
 // All implementations must embed UnimplementedCommonServiceServer
 // for forward compatibility
 type CommonServiceServer interface {
-	CommonTest(context.Context, *Empty) (*Response, error)
+	CommonTest(context.Context, *CommonReq) (*Response, error)
 	mustEmbedUnimplementedCommonServiceServer()
 }
 
@@ -58,7 +58,7 @@ type CommonServiceServer interface {
 type UnimplementedCommonServiceServer struct {
 }
 
-func (UnimplementedCommonServiceServer) CommonTest(context.Context, *Empty) (*Response, error) {
+func (UnimplementedCommonServiceServer) CommonTest(context.Context, *CommonReq) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommonTest not implemented")
 }
 func (UnimplementedCommonServiceServer) mustEmbedUnimplementedCommonServiceServer() {}
@@ -75,7 +75,7 @@ func RegisterCommonServiceServer(s grpc.ServiceRegistrar, srv CommonServiceServe
 }
 
 func _CommonService_CommonTest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(CommonReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func _CommonService_CommonTest_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: CommonService_CommonTest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CommonServiceServer).CommonTest(ctx, req.(*Empty))
+		return srv.(CommonServiceServer).CommonTest(ctx, req.(*CommonReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

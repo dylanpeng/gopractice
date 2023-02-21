@@ -18,6 +18,16 @@ func main() {
 	server := grpclibdemo.NewServer(config, router)
 	_ = server.Start()
 
+	config2 := &grpclibdemo.Config{
+		Host: "localhost",
+		Port: "23001",
+	}
+
+	router2 := &grpclibdemo.GRouter{}
+
+	server2 := grpclibdemo.NewServer(config2, router2)
+	_ = server2.Start()
+
 	// waitting for exit signal
 	exit := make(chan os.Signal)
 	stopSigs := []os.Signal{
