@@ -23,7 +23,7 @@ type Server struct {
 	router Router
 }
 
-func (s *Server) Start() (err error) {
+func (s *Server) Start(opt ...grpc.ServerOption) (err error) {
 	addr := net.JoinHostPort(s.conf.Host, s.conf.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *Server) Start() (err error) {
 		return
 	}
 
-	s.server = grpc.NewServer()
+	s.server = grpc.NewServer(opt...)
 	s.router.RegGrpc(s.server)
 
 	go func() {
