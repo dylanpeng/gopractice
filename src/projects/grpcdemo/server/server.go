@@ -60,6 +60,7 @@ func (s *server) GetHelloWorld(ctx context.Context, req *protocol_demo.HelloWorl
 	return rsp, nil
 }
 
+// 日志拦截器
 func LoggerInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 	t := time.Now()
 	fmt.Printf("gRpc begin method: method: %s | req: %v | time: %s", info.FullMethod, req, t.Format("2006-01-02 15:04:05.000000"))
@@ -70,6 +71,7 @@ func LoggerInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySer
 	return
 }
 
+// recover 拦截器
 func RecoveryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 	defer func() {
 		if e := recover(); e != nil {

@@ -10,16 +10,18 @@ require (
 	github.com/forgoer/openssl v0.0.0-20201023062029-c3112b0c8700
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-redis/redis v6.15.2+incompatible
-	github.com/go-zookeeper/zk v1.0.2
+	github.com/go-zookeeper/zk v1.0.3
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/golang/protobuf v1.5.2
 	github.com/kr/beanstalk v0.0.0-20180818045031-cae1762e4858
 	github.com/olivere/elastic/v7 v7.0.26
 	github.com/pkg/errors v0.9.1
+	github.com/processout/grpc-go-pool v1.2.1
 	github.com/smartystreets/goconvey v0.0.0-20190710185942-9d28bd7c0945
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/zap v1.10.0
 	google.golang.org/grpc v1.53.0
+	google.golang.org/protobuf v1.28.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gorm.io/driver/mysql v1.1.1
 	gorm.io/gorm v1.21.12
@@ -61,7 +63,6 @@ require (
 	github.com/onsi/gomega v1.9.0 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/processout/grpc-go-pool v1.2.1 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/sirupsen/logrus v1.4.1 // indirect
 	github.com/smartystreets/assertions v1.1.1 // indirect
@@ -78,7 +79,6 @@ require (
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/genproto v0.0.0-20230216225411-c8e22ba71e44 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	stathat.com/c/consistent v1.0.0 // indirect

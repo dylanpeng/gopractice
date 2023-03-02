@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/go-zookeeper/zk"
+	"gopractice/common"
 	"time"
 )
 
@@ -16,7 +17,7 @@ var (
 
 func main() {
 	// 连接zk
-	conn, _, err := zk.Connect(hosts, time.Second*5)
+	conn, _, err := zk.Connect(hosts, time.Second*10)
 	defer conn.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -31,10 +32,12 @@ func main() {
 	}
 
 	// 协程调用监听事件
-	go watchZkEvent(event)
+	go watchZkEvent(event, conn)
 
 	// 触发创建数据操作
 	create(conn, path, data)
+
+	common.Break()
 
 }
 
@@ -50,13 +53,21 @@ func callback(event zk.Event) {
 }
 
 // zk 回调函数
-func watchZkEvent(e <-chan zk.Event) {
+func watchZkEvent(e <-chan zk.Event, conn *zk.Conn) {
 	event := <-e
 	fmt.Println("###########################")
 	fmt.Println("path: ", event.Path)
 	fmt.Println("type: ", event.Type.String())
 	fmt.Println("state: ", event.State.String())
 	fmt.Println("---------------------------")
+
+	// 开始监听path
+	_, _, newEvent, err := conn.ExistsW(path)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	go watchZkEvent(newEvent, conn)
 }
 
 // 创建数据
@@ -90,12 +101,12 @@ func add(conn *zk.Conn, path string) {
 
 // 查
 func get(conn *zk.Conn, path string) {
-	data, _, err := conn.Get(path)
+	d, _, err := conn.Get(path)
 	if err != nil {
 		fmt.Printf("查询%s失败, err: %v\n", path, err)
 		return
 	}
-	fmt.Printf("%s 的值为 %s\n", path, string(data))
+	fmt.Printf("%s 的值为 %s\n", path, string(d))
 }
 
 // 删改与增不同在于其函数中的version参数,其中version是用于 CAS支持
