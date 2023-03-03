@@ -18,8 +18,8 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/processout/grpc-go-pool v1.2.1
 	github.com/smartystreets/goconvey v0.0.0-20190710185942-9d28bd7c0945
-	github.com/stretchr/testify v1.7.0
-	go.uber.org/zap v1.10.0
+	github.com/stretchr/testify v1.8.0
+	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
@@ -28,6 +28,8 @@ require (
 )
 
 require (
+	github.com/coreos/go-semver v0.3.1 // indirect
+	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
@@ -38,6 +40,7 @@ require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.3.1 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
@@ -70,16 +73,19 @@ require (
 	github.com/tidwall/match v1.0.1 // indirect
 	github.com/tidwall/pretty v0.0.0-20190325153808-1166b9ac2b65 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
-	go.uber.org/atomic v1.5.1 // indirect
-	go.uber.org/multierr v1.1.0 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.7 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.5.7 // indirect
+	go.etcd.io/etcd/client/v3 v3.5.7 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/lint v0.0.0-20190930215403-16217165b5de // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
-	google.golang.org/genproto v0.0.0-20230216225411-c8e22ba71e44 // indirect
+	google.golang.org/genproto v0.0.0-20230301171018-9ab4bdc49ad5 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	stathat.com/c/consistent v1.0.0 // indirect
 )
