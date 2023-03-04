@@ -45,8 +45,10 @@ func main() {
 	// 获取节点
 	_ = GetNode(dir)
 
-	// 添加租约节点
-	_ = AddNodeWithLease(string(data))
+	//// 添加租约节点
+	//_ = AddNodeWithLease(string(data))
+
+	_ = DeleteNode(dir)
 
 	common.Break()
 
@@ -77,6 +79,17 @@ func GetNode(key string) error {
 	_ = json.Unmarshal(rsp.Kvs[0].Value, user)
 
 	fmt.Printf("user: %+v\n", *user)
+	return nil
+}
+
+func DeleteNode(key string) error {
+	_, err := client.Delete(context.Background(), key)
+
+	if err != nil {
+		fmt.Printf("DeleteNode delete node fail. | err: %s\n", err)
+		return err
+	}
+
 	return nil
 }
 
