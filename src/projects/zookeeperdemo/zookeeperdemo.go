@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-zookeeper/zk"
 	"gopractice/common"
+	"strings"
 	"time"
 )
 
@@ -17,7 +18,7 @@ var (
 
 func main() {
 	// 连接zk
-	conn, _, err := zk.Connect(hosts, time.Second*10)
+	conn, _, err := zk.Connect(hosts, time.Second*5)
 	defer conn.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -36,6 +37,10 @@ func main() {
 
 	// 触发创建数据操作
 	create(conn, path, data)
+
+	_ = CreateAllPath(conn, "/t/t/t/t", data)
+
+	_, _ = getChildren(conn, "/kafka-manager")
 
 	common.Break()
 
@@ -78,6 +83,39 @@ func create(conn *zk.Conn, path string, data []byte) {
 		return
 	}
 	fmt.Println("创建数据成功")
+}
+
+func CreateAllPath(c *zk.Conn, path string, data []byte) error {
+	pathSpilt := strings.Split(path, "/")
+
+	for i := 2; i < len(pathSpilt); i++ {
+		p := strings.Join(pathSpilt[:i], "/")
+
+		exits, _, err := c.Exists(p)
+
+		if err != nil {
+			fmt.Printf("zookeeper client create exists fail. | err: %s\n", err)
+			return err
+		}
+
+		if !exits {
+			_, err = c.CreateContainer(p, nil, zk.FlagTTL, acls)
+
+			if err != nil {
+				fmt.Printf("zookeeper client create container fail. | err: %s\n", err)
+				return err
+			}
+		}
+	}
+
+	_, err := c.Create(path, data, flags, acls)
+
+	if err != nil {
+		fmt.Printf("zookeeper client create fail. | err: %s\n", err)
+		return err
+	}
+
+	return nil
 }
 
 // 增
@@ -132,4 +170,10 @@ func del(conn *zk.Conn, path string) {
 		return
 	}
 	fmt.Println("数据删除成功")
+}
+
+func getChildren(conn *zk.Conn, path string) ([]string, error) {
+	children, _, err := conn.Children(path)
+	fmt.Println(children)
+	return children, err
 }
