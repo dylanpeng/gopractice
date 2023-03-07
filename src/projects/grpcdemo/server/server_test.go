@@ -12,20 +12,20 @@ import (
 )
 
 func dialer() func(ctx context.Context, str string) (net.Conn, error) {
-	listner := bufconn.Listen(1024 * 1024)
+	lisener := bufconn.Listen(1024 * 1024)
 
 	serv := grpc.NewServer()
 
 	protocol_demo.RegisterHelloWorldServer(serv, &server{})
 
 	go func() {
-		if err := serv.Serve(listner); err != nil {
+		if err := serv.Serve(lisener); err != nil {
 			log.Fatal(err)
 		}
 	}()
 
 	return func(ctx context.Context, str string) (net.Conn, error) {
-		return listner.Dial()
+		return lisener.Dial()
 	}
 }
 
