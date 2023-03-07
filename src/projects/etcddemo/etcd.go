@@ -45,10 +45,14 @@ func main() {
 	// 获取节点
 	_ = GetNode(dir)
 
-	//// 添加租约节点
-	//_ = AddNodeWithLease(string(data))
+	// 添加租约节点
+	_ = AddNodeWithLease(string(data))
 
+	// 删除节点
 	_ = DeleteNode(dir)
+
+	// 事务
+	Tnx(string(data))
 
 	common.Break()
 
@@ -79,6 +83,22 @@ func GetNode(key string) error {
 	_ = json.Unmarshal(rsp.Kvs[0].Value, user)
 
 	fmt.Printf("user: %+v\n", *user)
+	return nil
+}
+
+func GetRangeNode(key string, endKey string) error {
+	rsp, err := client.Get(context.Background(), key, clientv3.WithRange(endKey), clientv3.WithSort(clientv3.SortByKey, clientv3.SortDescend))
+
+	if err != nil {
+		fmt.Printf("put etcd node fail. | err: %s\n", err)
+		return err
+	}
+
+	if len(rsp.Kvs) > 0 {
+		for _, item := range rsp.Kvs {
+			fmt.Printf("k: %s | v: %s\n", string(item.Key), string(item.Value))
+		}
+	}
 	return nil
 }
 
@@ -153,4 +173,18 @@ func AddNodeWithLease(value string) error {
 	}()
 
 	return nil
+}
+
+func Tnx(value string) {
+	//通过key的Create_Revision 是否为 0 来判断key是否存在。其中If，Then 以及 Else 分支都可以包含多个操作。
+	//返回的数据包含一个successed字段，当为 true 时代表 If 为真
+	txnRsp, err := client.Txn(context.Background()).If(clientv3.Compare(clientv3.CreateRevision(dir), "=", 0)).
+		Then(clientv3.OpPut(dir, value)).Commit()
+
+	if err != nil {
+		fmt.Printf("txn fail. | err: %s\n", err)
+		return
+	}
+
+	fmt.Printf("txnRsp: %t\n", txnRsp.Succeeded)
 }

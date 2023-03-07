@@ -18,7 +18,7 @@ var (
 
 func main() {
 	// 连接zk
-	conn, _, err := zk.Connect(hosts, time.Second*5)
+	conn, _, err := zk.Connect(hosts, time.Second*50)
 	defer conn.Close()
 	if err != nil {
 		fmt.Println(err)
