@@ -9,7 +9,7 @@ require (
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/ethereum/go-ethereum v1.11.4
 	github.com/forgoer/openssl v0.0.0-20201023062029-c3112b0c8700
-	github.com/gin-gonic/gin v1.7.2
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-zookeeper/zk v1.0.3
 	github.com/golang-jwt/jwt/v4 v4.4.3
