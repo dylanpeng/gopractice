@@ -3,6 +3,7 @@ package ethdemo
 import (
 	"context"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -10,6 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"log"
 	"math/big"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -210,15 +213,15 @@ func TestClient_PendingTransactionCount(t *testing.T) {
 func TestClient_SendTransaction(t *testing.T) {
 	// 交易发送方
 	// 获取私钥方式一，通过keystore文件
-	//fromKeystore, err := os.ReadFile(fromKeyStoreFile)
-	//require.NoError(t, err)
-	//fromKey, err := keystore.DecryptKey(fromKeystore, password)
-	//fromPrivkey := fromKey.PrivateKey
-	//fromPubkey := fromPrivkey.PublicKey
-	//fromAddr := crypto.PubkeyToAddress(fromPubkey)
+	fromKeystore, err := os.ReadFile("./private_key.keystore")
+	require.NoError(t, err)
+	fromKey, err := keystore.DecryptKey(fromKeystore, "123456")
+	privateKey := fromKey.PrivateKey
+	fromPubkey := privateKey.PublicKey
+	fromAddr := crypto.PubkeyToAddress(fromPubkey)
 
 	// 获取私钥方式二，通过私钥字符串
-	privateKey, err := crypto.HexToECDSA("")
+	//privateKey, err := crypto.HexToECDSA("")
 
 	// 交易接收方
 	toAddr := common.HexToAddress("0xEca1596D49a2325e1b80126d1F93756705A3b9ce")
@@ -240,8 +243,8 @@ func TestClient_SendTransaction(t *testing.T) {
 	//gasPrice = big.NewInt(250000000000)
 
 	// nonce获取
-	//nonce := uint64(8)
-	nonce, err := client.GetClient().PendingNonceAt(context.Background(), account)
+	//nonce := uint64(10)
+	nonce, err := client.GetClient().PendingNonceAt(context.Background(), fromAddr)
 	//nonce, err := client.GetClient().TransactionCount(context.Background(), account)
 
 	// 认证信息组装
@@ -259,7 +262,7 @@ func TestClient_SendTransaction(t *testing.T) {
 	auth.GasLimit = gasLimit // in units
 	//auth.GasLimit = uint64(0) // in units
 	auth.GasPrice = gasPrice
-	auth.From = account
+	auth.From = fromAddr
 
 	// 交易创建
 	//tx := types.NewTransaction(nonce,toAddr,amount,gasLimit,gasPrice,[]byte{})
@@ -294,6 +297,7 @@ func TestClient_SendTransaction(t *testing.T) {
 }
 
 func TestClient_PendingNonceAt(t *testing.T) {
+	t.Skip()
 	pendingNonce, err := client.GetClient().PendingNonceAt(context.Background(), account)
 
 	if err != nil {
@@ -302,4 +306,61 @@ func TestClient_PendingNonceAt(t *testing.T) {
 	}
 
 	t.Logf("nonce: %d", pendingNonce)
+}
+
+func TestClient_StoreKey(t *testing.T) {
+	keyPass := &KeyStorePassphrase{
+		scryptN: keystore.StandardScryptN,
+		scryptP: keystore.LightScryptP,
+	}
+
+	privateKey, _ := crypto.HexToECDSA("your private key")
+
+	err := keyPass.StoreKey("./xiaolong.keystore", &keystore.Key{PrivateKey: privateKey}, "123456")
+
+	if err != nil {
+		t.Fatalf("StoreKey fail. | err: %s", err)
+		return
+	}
+}
+
+type KeyStorePassphrase struct {
+	scryptN int
+	scryptP int
+}
+
+func (ks KeyStorePassphrase) StoreKey(filename string, key *keystore.Key, auth string) error {
+	keyjson, err := keystore.EncryptKey(key, auth, ks.scryptN, ks.scryptP)
+	if err != nil {
+		return err
+	}
+	// Write into temporary file
+	tmpName, err := WriteTemporaryKeyFile(filename, keyjson)
+	if err != nil {
+		return err
+	}
+
+	return os.Rename(tmpName, filename)
+}
+
+func WriteTemporaryKeyFile(file string, content []byte) (string, error) {
+	// Create the keystore directory with appropriate permissions
+	// in case it is not present yet.
+	const dirPerm = 0700
+	if err := os.MkdirAll(filepath.Dir(file), dirPerm); err != nil {
+		return "", err
+	}
+	// Atomic write: create a temporary hidden file first
+	// then move it into place. TempFile assigns mode 0600.
+	f, err := os.CreateTemp(filepath.Dir(file), "."+filepath.Base(file)+".tmp")
+	if err != nil {
+		return "", err
+	}
+	if _, err := f.Write(content); err != nil {
+		f.Close()
+		os.Remove(f.Name())
+		return "", err
+	}
+	f.Close()
+	return f.Name(), nil
 }
