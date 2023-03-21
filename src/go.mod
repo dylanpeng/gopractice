@@ -42,6 +42,7 @@ require (
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
 	github.com/eapache/queue v1.1.0 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.1 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
@@ -52,6 +53,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.3.1 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-uuid v1.0.2 // indirect
