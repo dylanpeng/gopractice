@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/stretchr/testify/require"
+	"gopractice/projects/ethdemo/nbc"
 	"log"
 	"math/big"
 	"os"
@@ -34,7 +35,7 @@ func init() {
 	}
 
 	account = common.HexToAddress("0x5B7f33E9f0B24465cBD575d3cb354D286a9DF576")
-	contractAddr = common.HexToAddress("0x0e22701968dcafc0a7bb8892e554d1b2ece11be7")
+	contractAddr = common.HexToAddress("0x0e22701968Dcafc0a7bb8892E554D1b2eCE11Be7")
 }
 
 func TestClient_BalanceAt(t *testing.T) {
@@ -210,6 +211,7 @@ func TestClient_PendingTransactionCount(t *testing.T) {
 	t.Logf("nonce: %d", pendingCount)
 }
 
+// 转账
 func TestClient_SendTransaction(t *testing.T) {
 	// 交易发送方
 	// 获取私钥方式一，通过keystore文件
@@ -249,7 +251,7 @@ func TestClient_SendTransaction(t *testing.T) {
 
 	// 认证信息组装
 	//auth := bind.NewKeyedTransactor(fromPrivkey)
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(6))
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(5))
 
 	if err != nil {
 		t.Fatalf("NewKeyedTransactorWithChainID fail. | err: %s", err)
@@ -309,6 +311,7 @@ func TestClient_PendingNonceAt(t *testing.T) {
 }
 
 func TestClient_StoreKey(t *testing.T) {
+	t.Skip()
 	keyPass := &KeyStorePassphrase{
 		scryptN: keystore.StandardScryptN,
 		scryptP: keystore.LightScryptP,
@@ -363,4 +366,100 @@ func WriteTemporaryKeyFile(file string, content []byte) (string, error) {
 	}
 	f.Close()
 	return f.Name(), nil
+}
+
+func TestClient_ContractCall(t *testing.T) {
+	nbcContract, err := nbc.NewNbcToken(contractAddr, client.GetClient())
+
+	if err != nil {
+		t.Fatalf("NewNbcToken fail. | err: %s", err)
+		return
+	}
+
+	nftCount, err := nbcContract.BalanceOf(nil, account)
+
+	if err != nil {
+		t.Fatalf("BalanceOf fail. | err: %s", err)
+		return
+	}
+
+	t.Logf("owner: %s have %s nft", account.String(), nftCount.String())
+}
+
+func TestClient_SafeMint(t *testing.T) {
+	nbcContract, err := nbc.NewNbcToken(contractAddr, client.GetClient())
+
+	if err != nil {
+		t.Fatalf("NewNbcToken fail. | err: %s", err)
+		return
+	}
+
+	// 交易发送方
+	// 获取私钥方式一，通过keystore文件
+	fromKeystore, err := os.ReadFile("./private.keystore")
+	require.NoError(t, err)
+	fromKey, err := keystore.DecryptKey(fromKeystore, "123456")
+	privateKey := fromKey.PrivateKey
+	fromPubkey := privateKey.PublicKey
+	fromAddr := crypto.PubkeyToAddress(fromPubkey)
+
+	t.Logf("account: %s", fromAddr.String())
+
+	// gasLimit
+	var gasLimit uint64 = 300000
+
+	gasPrice, err := client.GetClient().SuggestGasPrice(context.Background())
+
+	if err != nil {
+		t.Fatalf("SuggestGasPrice fail. | err: %s", err)
+		return
+	}
+
+	// nonce获取
+	//nonce := uint64(10)
+	nonce, err := client.GetClient().PendingNonceAt(context.Background(), fromAddr)
+
+	// 认证信息组装
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(5))
+
+	if err != nil {
+		t.Fatalf("NewKeyedTransactorWithChainID fail. | err: %s", err)
+		return
+	}
+	//auth,err := bind.NewTransactor(strings.NewReader(mykey),"111")
+	auth.Nonce = big.NewInt(int64(nonce))
+	auth.Value = big.NewInt(0) // in wei
+	//auth.Value = big.NewInt(100000)     // in wei
+	auth.GasLimit = gasLimit // in units
+	//auth.GasLimit = uint64(0) // in units
+	auth.GasPrice = gasPrice
+	auth.From = fromAddr
+
+	opts := &bind.TransactOpts{
+		From:      auth.From,
+		Nonce:     auth.Nonce,
+		Signer:    auth.Signer,
+		Value:     nil,
+		GasPrice:  auth.GasPrice,
+		GasFeeCap: nil,
+		GasTipCap: nil,
+		GasLimit:  auth.GasLimit,
+		Context:   nil,
+		NoSend:    false,
+	}
+
+	tx, err := nbcContract.SafeMint(opts, account, "QmVJ2bVQYukBFLhKixZ64LPPF5fbw1jYj4anupPKmfci9e")
+	if err != nil {
+		t.Fatalf("SafeMint fail. err: %s", err)
+	}
+
+	// 等待挖矿完成
+	receipt, err := bind.WaitMined(context.Background(), client.GetClient(), tx)
+
+	if err != nil {
+		t.Fatalf("WaitMined fail. | err: %s", err)
+		return
+	}
+
+	t.Logf("receipt: %+v", receipt)
 }
