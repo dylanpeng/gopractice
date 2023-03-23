@@ -24,9 +24,7 @@ var contractAddr common.Address
 func init() {
 	var err error
 
-	// goerli: https://eth-goerli.g.alchemy.com/v2/dNfDfdwK13xMv9xVPcQ7GEaroWNpTch6
-	// main: https://eth-mainnet.g.alchemy.com/v2/L1GdDpXQwe_eqs6QI4ewxwEdROCklTza
-	conf := &Config{Addr: "https://eth-goerli.g.alchemy.com/v2/dNfDfdwK13xMv9xVPcQ7GEaroWNpTch6"}
+	conf := &Config{Addr: ""}
 
 	client, err = NewClient(conf)
 
@@ -34,7 +32,7 @@ func init() {
 		log.Fatal(err)
 	}
 
-	account = common.HexToAddress("0x5B7f33E9f0B24465cBD575d3cb354D286a9DF576")
+	account = common.HexToAddress("")
 	contractAddr = common.HexToAddress("0x0e22701968Dcafc0a7bb8892E554D1b2eCE11Be7")
 }
 
@@ -226,7 +224,7 @@ func TestClient_SendTransaction(t *testing.T) {
 	//privateKey, err := crypto.HexToECDSA("")
 
 	// 交易接收方
-	toAddr := common.HexToAddress("0xEca1596D49a2325e1b80126d1F93756705A3b9ce")
+	toAddr := common.HexToAddress("")
 
 	// 数量
 	amount := big.NewInt(100000000000000000)
@@ -448,7 +446,7 @@ func TestClient_SafeMint(t *testing.T) {
 		NoSend:    false,
 	}
 
-	tx, err := nbcContract.SafeMint(opts, account, "QmVJ2bVQYukBFLhKixZ64LPPF5fbw1jYj4anupPKmfci9e")
+	tx, err := nbcContract.SafeMint(opts, account, "")
 	if err != nil {
 		t.Fatalf("SafeMint fail. err: %s", err)
 	}
