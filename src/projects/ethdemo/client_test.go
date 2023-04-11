@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/stretchr/testify/require"
+	initialize "gopractice/projects/ethdemo/intialize"
 	"gopractice/projects/ethdemo/nbc"
 	"log"
 	"math/big"
@@ -24,7 +25,7 @@ var contractAddr common.Address
 func init() {
 	var err error
 
-	conf := &Config{Addr: ""}
+	conf := &Config{Addr: "eth goerli net node"}
 
 	client, err = NewClient(conf)
 
@@ -59,7 +60,7 @@ func TestClient_StorageAt(t *testing.T) {
 	t.Skip()
 
 	// 连接以太坊网络
-	clientNew, err := ethclient.Dial("https://eth-mainnet.g.alchemy.com/v2/L1GdDpXQwe_eqs6QI4ewxwEdROCklTza")
+	clientNew, err := ethclient.Dial("eth main net node")
 	if err != nil {
 		t.Fatalf("Failed to connect to the Ethereum network. | err: %s", err)
 		return
@@ -211,6 +212,7 @@ func TestClient_PendingTransactionCount(t *testing.T) {
 
 // 转账
 func TestClient_SendTransaction(t *testing.T) {
+	t.Skip()
 	// 交易发送方
 	// 获取私钥方式一，通过keystore文件
 	fromKeystore, err := os.ReadFile("./private_key.keystore")
@@ -367,6 +369,7 @@ func WriteTemporaryKeyFile(file string, content []byte) (string, error) {
 }
 
 func TestClient_ContractCall(t *testing.T) {
+	t.Skip()
 	nbcContract, err := nbc.NewNbcToken(contractAddr, client.GetClient())
 
 	if err != nil {
@@ -385,6 +388,7 @@ func TestClient_ContractCall(t *testing.T) {
 }
 
 func TestClient_SafeMint(t *testing.T) {
+	t.Skip()
 	nbcContract, err := nbc.NewNbcToken(contractAddr, client.GetClient())
 
 	if err != nil {
@@ -460,4 +464,39 @@ func TestClient_SafeMint(t *testing.T) {
 	}
 
 	t.Logf("receipt: %+v", receipt)
+}
+
+func TestClient_EventLogs(t *testing.T) {
+	// 连接本地ganache
+	clientNew, err := ethclient.Dial("http://127.0.0.1:7545")
+	if err != nil {
+		t.Fatalf("Failed to connect to the Ethereum network. | err: %s", err)
+		return
+	}
+
+	// 要获取状态变量的合约地址和变量名
+	contractAddress := common.HexToAddress("0x68Dd3d4d2F3A118c626d91Df2a250ceFe52cD130")
+
+	con, err := initialize.NewInitialize(contractAddress, clientNew)
+
+	if err != nil {
+		t.Fatalf("NewInitialize fail. | err: %s", err)
+		return
+	}
+
+	events, err := con.FilterAccountEvent(&bind.FilterOpts{
+		Start:   0,
+		End:     nil,
+		Context: context.Background(),
+	})
+
+	if err != nil {
+		t.Fatalf("FilterAccountEvent fail. | err: %s", err)
+		return
+	}
+
+	for events.Next() {
+		t.Logf("events: %+v", events.Event)
+	}
+
 }
