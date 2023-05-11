@@ -3,9 +3,28 @@ package main
 import "fmt"
 
 func main() {
-	Solution1(1234500)
+	//Solution1(1234500)
 	//fmt.Println(Solution2([]int{1, 0}))
 	//fmt.Println(Solution3([]int{1, 2, 4, 5}, []int{2, 3, 5, 6}, 6))
+	t := t1()
+	fmt.Println(*t)
+
+}
+
+func t1() (a *int) {
+	a = new(int)
+	*a = 9
+	defer func() {
+		*a++
+		fmt.Printf("one: %d\n", *a)
+	}()
+
+	defer func() {
+		*a++
+		fmt.Printf("two: %d\n", *a)
+	}()
+
+	return a
 }
 
 func Solution1(N int) {
