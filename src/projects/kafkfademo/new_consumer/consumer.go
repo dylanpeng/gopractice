@@ -50,7 +50,7 @@ func StartConsumerGroup(id string) {
 	config.Consumer.Return.Errors = true
 	config.Consumer.Offsets.Initial = sarama.OffsetNewest //初始从最新的offset开始
 
-	group, err := sarama.NewConsumerGroup([]string{"localhost:9092"}, "my-group", config)
+	group, err := sarama.NewConsumerGroup([]string{"localhost:9092"}, "consumer_group_1", config)
 	if err != nil {
 		panic(err)
 	}
