@@ -15,6 +15,11 @@ import (
 func main() {
 	go StartConsumer("1")
 	go StartConsumer("2")
+	go StartConsumer("3")
+	go StartConsumer("4")
+	go StartConsumer("5")
+	go StartConsumer("6")
+	go StartConsumer("7")
 	//go StartOrderConsumer()
 	go StartProducer()
 	//time.Sleep(time.Minute)
@@ -26,14 +31,14 @@ func StartConsumer(num string) {
 	c, _ := rocketmq.NewPushConsumer(
 		consumer.WithGroupName("testGroup"),
 		consumer.WithNameServer([]string{"127.0.0.1:9876"}),
-		//consumer.WithInstance(num),
+		consumer.WithInstance(num),
 	)
 
 	err := c.Subscribe("test", consumer.MessageSelector{}, func(ctx context.Context,
 		msgs ...*primitive.MessageExt) (consumer.ConsumeResult, error) {
+		fmt.Printf("------------------consumer:%s--------------------------\n", num)
 		for i := range msgs {
-			fmt.Printf("------------------consumer:%s--------------------------\n", num)
-			fmt.Printf("consumer subscribe callback: %v \n", msgs[i])
+			fmt.Printf("consumer subscribe callback: queueId: %d | num: %s \n", msgs[i].Queue.QueueId, num)
 		}
 
 		return consumer.ConsumeSuccess, nil
@@ -68,11 +73,11 @@ func StartProducer() {
 	topic := "test"
 	tags := []string{"TagA", "TagB", "TagC"}
 
-	for i := 0; i < 20; i++ {
+	for i := 0; i < 2000; i++ {
 		tag := tags[i%3]
-		if i > 10 {
-			time.Sleep(time.Second * 10)
-		}
+		//if i > 10 {
+		//	time.Sleep(time.Second * 10)
+		//}
 
 		msg := &primitive.Message{
 			Topic: topic,

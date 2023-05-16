@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"github.com/apache/rocketmq-client-go/v2"
@@ -35,8 +36,34 @@ func main() {
 			fmt.Printf("send message success: result=%s\n", res.String())
 		}
 	}
+
+	//manualPrint(p, topic)
+
 	err = p.Shutdown()
 	if err != nil {
 		fmt.Printf("shutdown producer error: %s", err.Error())
+	}
+}
+
+func manualPrint(p rocketmq.Producer, topic string) {
+	for {
+		inputReader := bufio.NewReader(os.Stdin)
+		value, err := inputReader.ReadString('\n')
+
+		if err != nil {
+			panic(err)
+		}
+
+		msg := &primitive.Message{
+			Topic: topic,
+			Body:  []byte(value),
+		}
+		res, err := p.SendSync(context.Background(), msg)
+
+		if err != nil {
+			fmt.Printf("send message error: %s\n", err)
+		} else {
+			fmt.Printf("send message success: result=%s\n", res.String())
+		}
 	}
 }

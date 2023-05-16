@@ -5,22 +5,52 @@ import (
 	"time"
 )
 
+var chanA chan int
+
 func main() {
-	chanA := make(chan bool)
+	chanA = make(chan int)
 
-	go func() {
-		time.Sleep(3 * time.Second)
-		close(chanA)
-		fmt.Printf("send\n")
-	}()
+	//go GoMethod(2)
+	//go GoMethod(3)
+	//go GoMethod(4)
+	//go GoMethod(5)
 
-	b, ok := <-chanA
+	go func() { chanA <- 1 }()
+	go func() { chanA <- 2 }()
+	go func() { chanA <- 3 }()
+	go func() { chanA <- 4 }()
+	go func() { chanA <- 5 }()
+	time.Sleep(1000 * time.Millisecond)
 
-	if ok {
-		fmt.Printf("ok: %s\n", b)
-	} else {
-		fmt.Printf("not ok %s\n", b)
+	go GoMethod(1)
+
+	time.Sleep(3 * time.Second)
+	close(chanA)
+
+	time.Sleep(time.Hour)
+	return
+}
+
+func GoMethod(index int) {
+	//for item := range chanA {
+	//	fmt.Printf("item: %d |index: %d\n", item, index)
+	//}
+
+	for {
+		out := false
+		select {
+		case item, ok := <-chanA:
+			if ok {
+				fmt.Printf("item: %d |index: %d\n", item, index)
+			} else {
+				out = true
+			}
+		}
+
+		if out {
+			break
+		}
 	}
 
-	return
+	fmt.Printf("index done: %d\n", index)
 }
