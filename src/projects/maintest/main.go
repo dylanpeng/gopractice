@@ -1,29 +1,14 @@
 package main
 
-import (
-	"fmt"
-)
-
 type Point struct {
 	X float64
 	Y float64
 }
 
 func main() {
-	// 示例使用
-	points := []Point{
-		{X: 2, Y: 3},
-		{X: 5, Y: 6},
-		{X: 8, Y: 9},
-	}
-
-	centerPoint := Point{X: 10, Y: 10}
-
-	newPositions := movePoints(points, centerPoint)
-
-	for _, newPosition := range newPositions {
-		fmt.Printf("New Position: (%f, %f)\n", newPosition.X, newPosition.Y)
-	}
+	var a []int
+	a = make([]int, 1)
+	a[0] = 2
 }
 
 func movePoints(points []Point, center Point) []Point {

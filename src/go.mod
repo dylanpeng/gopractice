@@ -4,6 +4,8 @@ go 1.20
 
 require (
 	github.com/BurntSushi/toml v0.3.1
+	github.com/RuiHirano/rvo2-go/monitor v0.0.0-20200707091306-e572a9b06cee
+	github.com/RuiHirano/rvo2-go/src/rvosimulator v0.0.0-20200707091306-e572a9b06cee
 	github.com/Shopify/sarama v1.38.1
 	github.com/apache/rocketmq-client-go/v2 v2.0.0
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
@@ -32,6 +34,7 @@ require (
 )
 
 require (
+	github.com/RuiHirano/rvo2-go v1.1.3 // indirect
 	github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2 // indirect
 	github.com/bytedance/sonic v1.8.8 // indirect
@@ -77,12 +80,14 @@ require (
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
-	github.com/konsorten/go-windows-terminal-sequences v1.0.1 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/mtfelian/golang-socketio v1.5.2 // indirect
+	github.com/mtfelian/synced v1.0.0 // indirect
 	github.com/onsi/ginkgo v1.12.0 // indirect
 	github.com/onsi/gomega v1.9.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
@@ -90,7 +95,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
-	github.com/sirupsen/logrus v1.4.1 // indirect
+	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/smartystreets/assertions v1.1.1 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
