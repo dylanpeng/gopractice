@@ -88,6 +88,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mtfelian/golang-socketio v1.5.2 // indirect
 	github.com/mtfelian/synced v1.0.0 // indirect
+	github.com/nsqio/go-nsq v1.1.0 // indirect
 	github.com/onsi/ginkgo v1.12.0 // indirect
 	github.com/onsi/gomega v1.9.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
