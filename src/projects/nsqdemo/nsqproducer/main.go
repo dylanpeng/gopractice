@@ -23,7 +23,7 @@ func sendMessage() {
 
 	producer.SetLogger(nullLogger, nsq.LogLevelInfo) // 3. 设置不输出info级别的日志
 
-	for i := 0; i < 5; i++ { // 4. 生产者发布消息
+	for i := 0; i < 100; i++ { // 4. 生产者发布消息
 		message := "消息发送测试 " + strconv.Itoa(i+10000)
 		err2 := producer.Publish("one-test", []byte(message)) // 注意one-test　对应消费者consumer.go　保持一致
 		if err2 != nil {
