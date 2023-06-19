@@ -3,10 +3,16 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"gopractice/projects/gindemo/control"
+	"log"
 	"net/http"
+	_ "net/http/pprof"
+	"runtime"
 )
 
 func main() {
+	runtime.SetBlockProfileRate(1)     // 开启对阻塞操作的跟踪，block
+	runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪，mutex
+
 	router := gin.Default()
 
 	router.OPTIONS("/*action", func(c *gin.Context) {
@@ -54,6 +60,10 @@ func main() {
 			c.File("go.mod")
 		})
 	}
+
+	go func() {
+		log.Println(http.ListenAndServe(":6060", nil))
+	}()
 
 	_ = router.Run(":10000")
 }
