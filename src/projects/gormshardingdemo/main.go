@@ -12,7 +12,9 @@ import (
 func main() {
 	global.InitDB()
 
-	logic.Logic.AddSharding()
+	//logic.Logic.AddSharding()
+	//logic.Logic.GetSharding()
+	logic.Logic.Update()
 
 	// waitting for exit signal
 	exit := make(chan os.Signal)

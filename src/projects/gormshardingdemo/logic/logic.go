@@ -38,3 +38,23 @@ func (l *logic) AddSharding() {
 	}
 
 }
+
+func (l *logic) GetSharding() {
+	datas, err := model.Sharding.GetDatas([]int64{1687323722499, 98, 1687323722513, 1687323722520})
+
+	if err != nil {
+		fmt.Printf("sharding get fail. | err: %s\n", err)
+		return
+	}
+
+	fmt.Printf("sharding get success. | datas: %s\n", datas)
+}
+
+func (l *logic) Update() {
+	err := model.Sharding.Update(nil)
+
+	if err != nil {
+		fmt.Printf("sharding get fail. | err: %s\n", err)
+		return
+	}
+}
