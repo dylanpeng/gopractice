@@ -1,0 +1,21 @@
+# service-mydemo-NodePort.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-my-demo
+  namespace: dev
+  labels:
+    app: my-golang-app-demo
+spec:
+  selector:
+    app: my-golang-app-demo
+  ports:
+  - protocol: TCP
+    port: 8991
+    targetPort: 8991
+    name: svr-port1
+  - protocol: TCP
+    port: 8992
+    targetPort: 8992
+    name: svr-port2
+  type: NodePort
