@@ -30,12 +30,15 @@ func main() {
 	//
 	//fmt.Printf("%s \n", string(deCode))
 
-	now := time.Date(2022, 7, 31, 11, 0, 0, 0, time.Local)
-	pastMonth := now.AddDate(0, -1, 0)
+	var err error
+	fmt.Print(err.Error())
 
-	a, b := now.Format("0601"), pastMonth.Format("0601")
-
-	fmt.Printf("a: %s, b: %s, a: %s, b: %s \n", a, b, now, pastMonth)
+	//now := time.Date(2022, 7, 31, 11, 0, 0, 0, time.Local)
+	//pastMonth := now.AddDate(0, -1, 0)
+	//
+	//a, b := now.Format("0601"), pastMonth.Format("0601")
+	//
+	//fmt.Printf("a: %s, b: %s, a: %s, b: %s \n", a, b, now, pastMonth)
 
 }
 
@@ -91,7 +94,7 @@ func DesensitizationNormal(org string) (result string) {
 	}
 
 	result = strings.Repeat("*", orgLen-num) + org[orgLen-num:orgLen]
-	
+
 	return
 }
 
