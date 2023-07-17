@@ -40,6 +40,8 @@ func main() {
 	//
 	//fmt.Printf("a: %s, b: %s, a: %s, b: %s \n", a, b, now, pastMonth)
 
+	//update2
+
 }
 
 func WinningLottery(probabilityMap map[int64]int) (winId int64) {
