@@ -24,8 +24,14 @@ type AppConfig struct {
 }
 
 type ServerConfig struct {
-	Host string `json:"host"`
-	Port string `json:"port"`
+	Host   string `json:"host"`
+	Port   string `json:"port"`
+	LatLng *LatLng
+}
+
+type LatLng struct {
+	Lat string
+	Lng string
 }
 
 type MysqlConfig struct {
