@@ -4,10 +4,10 @@ import "fmt"
 
 func main() {
 	//Solution1(1234500)
-	//fmt.Println(Solution2([]int{1, 0}))
+	fmt.Println(Solution2([]int{0, 0, 1, 0, -1}))
 	//fmt.Println(Solution3([]int{1, 2, 4, 5}, []int{2, 3, 5, 6}, 6))
-	t := t1()
-	fmt.Println(*t)
+	//t := t1()
+	//fmt.Println(*t)
 
 }
 
@@ -43,29 +43,22 @@ func Solution1(N int) {
 
 func Solution2(A []int) int {
 	length, count := len(A), 0
-
 	result, sum := 0, 0
 
-	for i := 0; i < length-1; i++ {
-		sum = A[i]
-		if A[i] == 0 {
-			result++
+	for start := 0; start < length; start++ {
+		sum = 0
+		if A[start] == 0 {
 			count++
 		}
-
-		for j := i + 1; j < length; j++ {
-			sum += A[j]
+		for end := start; end >= 0; end-- {
+			sum += A[end]
 			if sum == 0 {
 				result++
 			}
 		}
 	}
 
-	if A[length-1] == 0 {
-		result++
-	}
-
-	if count == length-1 && A[length-1] == 0 {
+	if count == length {
 		return -1
 	}
 
