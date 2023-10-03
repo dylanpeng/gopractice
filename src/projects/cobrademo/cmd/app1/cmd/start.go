@@ -56,3 +56,20 @@ func init() {
 	// local为本地选项，对应方法为Flags，只对指定的Command生效
 	apiCmd.Flags().StringVarP(&ConfigPath, "config", "c", "", "读取文件路径")
 }
+
+/*
+go run ./main.go -v -s aaa
+root verbose: true
+root config:
+root string: aaa
+
+go run ./main.go api -v -s aaa -c config
+api verbose: true
+api config: config
+api string: aaa
+
+go run ./main.go api apiChild -v -s aaa
+apiChild verbose: true
+apiChild config:
+apiChild string: aaa
+*/
