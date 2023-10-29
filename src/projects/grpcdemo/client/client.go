@@ -26,8 +26,8 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	status := defaultReadyCheck(ctx, conn)
-	if status == connectivity.Ready {
+	status1 := defaultReadyCheck(ctx, conn)
+	if status1 == connectivity.Ready {
 		fmt.Printf("client beready \n")
 	} else {
 		fmt.Printf("client not beready \n")
@@ -39,6 +39,10 @@ func main() {
 	r, err := c.GetHelloWorld(context.Background(), &protocol_demo.HelloWorldReq{Id: 100})
 
 	if err != nil {
+		s, ok := status.FromError(err)
+		if ok {
+			fmt.Printf("errcode: %d\n", s.Code())
+		}
 		fmt.Printf("request GetHelloWorld faild: %s \n", err)
 		return
 	}

@@ -57,6 +57,7 @@ func (s *server) GetHelloWorld(ctx context.Context, req *protocol_demo.HelloWorl
 	rsp = &protocol_demo.HelloWorldRsp{}
 	rsp.Message = fmt.Sprintf("hello user: %d", req.Id)
 	fmt.Printf("%s\n", s.addr)
+	//return rsp, status.Errorf(111, "error")
 	return rsp, nil
 }
 
