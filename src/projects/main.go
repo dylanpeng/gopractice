@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	fmt.Println(ToValidateAddress("0x5b7f33e9f0b24465cbd575d3cb354d286a9df576"))
 }
 
