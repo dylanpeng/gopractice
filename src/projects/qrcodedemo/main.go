@@ -3,18 +3,24 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/golang/freetype"
+	"github.com/golang/freetype/truetype"
 	"github.com/skip2/go-qrcode"
+	"golang.org/x/image/font"
 	"image"
+	"image/color"
 	"image/draw"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	"io/ioutil"
 	"net/http"
 	"os"
+	"testing"
 )
 
 func main() {
-	backImg, err := GetImageFromFile("./Group1171278146.png")
+	backImg, err := GetImageFromNet("https://static.awanptest.com/pint-intl-test/image-normal/20240730085002-ibvXU.png")
 	if err != nil {
 		fmt.Printf("GetImageFromFile fail. err:%s", err)
 		return
@@ -125,4 +131,101 @@ func GetImageFromNet(url string) (image.Image, error) {
 	defer res.Body.Close()
 	m, _, err := image.Decode(res.Body)
 	return m, err
+}
+
+// 字体相关
+type TextBrush struct {
+	FontType  *truetype.Font
+	FontSize  float64
+	FontColor *image.Uniform
+	TextWidth int
+}
+
+func NewTextBrush(FontFilePath string, FontSize float64, FontColor *image.Uniform, textWidth int) (*TextBrush, error) {
+	fontFile, err := ioutil.ReadFile(FontFilePath)
+	if err != nil {
+		return nil, err
+	}
+	fontType, err := truetype.Parse(fontFile)
+	if err != nil {
+		return nil, err
+	}
+	if textWidth <= 0 {
+		textWidth = 20
+	}
+	return &TextBrush{FontType: fontType, FontSize: FontSize, FontColor: FontColor, TextWidth: textWidth}, nil
+}
+
+// 图片插入文字
+func (fb *TextBrush) DrawFontOnRGBA(rgba *image.RGBA, pt image.Point, content string) {
+
+	c := freetype.NewContext()
+	c.SetDPI(72)
+	c.SetFont(fb.FontType)
+	c.SetHinting(font.HintingFull)
+	c.SetFontSize(fb.FontSize)
+	c.SetClip(rgba.Bounds())
+	c.SetDst(rgba)
+	c.SetSrc(fb.FontColor)
+
+	c.DrawString(content, freetype.Pt(pt.X, pt.Y))
+
+}
+
+func Image2RGBA(img image.Image) *image.RGBA {
+
+	baseSrcBounds := img.Bounds().Max
+
+	newWidth := baseSrcBounds.X
+	newHeight := baseSrcBounds.Y
+
+	des := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight)) // 底板
+	//首先将一个图片信息存入jpg
+	draw.Draw(des, des.Bounds(), img, img.Bounds().Min, draw.Over)
+
+	return des
+}
+
+func SaveImage(targetPath string, m image.Image) error {
+	fSave, err := os.Create(targetPath)
+	if err != nil {
+		return err
+	}
+	defer fSave.Close()
+
+	err = jpeg.Encode(fSave, m, nil)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func TestTextBrush_DrawFontOnRGBA(t *testing.T) {
+	textBrush, err := NewTextBrush("字体库ttf位置", 20, image.Black, 20)
+	if err != nil {
+		t.Log(err)
+	}
+
+	backgroud, err := GetImageFromFile("./resource/backgroud.jpg")
+	if err != nil {
+		t.Log(err)
+	}
+	des := Image2RGBA(backgroud)
+	textBrush.DrawFontOnRGBA(des, image.Pt(10, 50), "世界你好")
+
+	//调整颜色
+	textBrush.FontColor = image.NewUniform(color.RGBA{
+		R: 0x8E,
+		G: 0xE5,
+		B: 0xEE,
+		A: 255,
+	})
+
+	textBrush.DrawFontOnRGBA(des, image.Pt(10, 80), "我是用Go拼上的文字")
+
+	if err := SaveImage("./resource/text.png", des); err != nil {
+		t.Log(err)
+	}
 }
