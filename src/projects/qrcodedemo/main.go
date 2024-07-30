@@ -41,6 +41,21 @@ func main() {
 		fmt.Printf("GetImageFromFile fail. err:%s", err)
 		return
 	}
+	textBrush, err := NewTextBrush("./microsoft.ttf", 20, image.Black, 20)
+	if err != nil {
+		fmt.Printf("NewTextBrush fail. err:%s", err)
+		return
+	}
+	textBrush.DrawFontOnRGBA(newImage, image.Pt(10, 50), "世界你好")
+	//调整颜色
+	textBrush.FontColor = image.NewUniform(color.RGBA{
+		R: 0x8E,
+		G: 0xE5,
+		B: 0xEE,
+		A: 255,
+	})
+
+	textBrush.DrawFontOnRGBA(newImage, image.Pt(10, 80), "我是用Go拼上的文字")
 	f, err := os.Create("./newimage.png")
 	if err != nil {
 		fmt.Printf("Create fail. err:%s", err)
