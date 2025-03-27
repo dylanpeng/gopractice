@@ -49,6 +49,9 @@ func WinningLottery(probabilityMap map[int64]int) (winId int64) {
 	rNum := rand.Intn(total)
 
 	for k, v := range probabilityMap {
+		if v == 0 {
+			continue
+		}
 		if rNum >= n && rNum < n+v {
 			return k
 		}
