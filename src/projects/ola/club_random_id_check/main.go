@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	r := CheckClubRandomID(11311312)
+	r := CheckClubRandomID(11243213)
 	fmt.Printf("check result: %v\n", r)
 	//r := CheckSameNum([]int64{3, 1, 1, 1, 3, 1}, 3)
 	//fmt.Printf("check result: %v\n", r)
@@ -40,7 +40,7 @@ func CheckClubRandomID(rid int64) bool {
 // 检查连续相同数字
 func CheckSameNum(arry []int64, minLen int) bool {
 	l := len(arry)
-	if l <= minLen || minLen <= 1 {
+	if l < minLen || minLen <= 1 {
 		return false
 	}
 	// groupNum 连续几个一样
@@ -65,7 +65,7 @@ func CheckSameNum(arry []int64, minLen int) bool {
 // 检查连续相同数字
 func CheckContinuousNum(arry []int64, minLen int) bool {
 	l := len(arry)
-	if l <= minLen || minLen <= 1 {
+	if l < minLen || minLen <= 1 {
 		return false
 	}
 	// groupNum 连续几个顺子
